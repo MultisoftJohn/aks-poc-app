@@ -7,6 +7,9 @@ jobs:
   connectAKS:
     runs-on: ubuntu-latest
     steps:
+      - name: Verify Azure CLI Installation
+        run: az --version
+
       - name: Azure Login
         uses: azure/login@v1.4.6
         with:
