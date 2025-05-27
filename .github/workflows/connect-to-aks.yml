@@ -25,3 +25,6 @@ jobs:
           else
             echo "✅ Azure login successful!"
           fi
+      - name: Debug Client ID
+        run: |
+        echo "Extracted Client ID: $(jq -r '.clientId' <<< '${{ secrets.AZURE_CREDENTIALS }}')"
