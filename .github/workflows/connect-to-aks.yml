@@ -16,22 +16,16 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1.4.6
         with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
 
-
-      - name: Set up AKS Context
-        uses: azure/aks-set-context@v3
-        with:
-          resource-group: ${{ env.RESOURCE_GROUP }}
-          cluster-name: ${{ env.CLUSTER_NAME }}
-          admin: 'false'
-          use-kubelogin: 'true'
-
-      - name: Verify Connection
-        run: kubectl get pods
-
-      - name: Show Nodes
-        run: kubectl get nodes
+      - name: Validate Azure Login
+        run: |
+          if ! az account show; then
+            echo "Azure login failed!"
+            exit 1
+          else
+            echo "Azure login successful!"
+          fi
