@@ -12,21 +12,10 @@ jobs:
 
       - name: Azure Login with Service Principal
         run: |
-          az login --service-principal \
-          --username "${{ secrets.AZURE_CLIENT_ID }}" \
-          --password "${{ secrets.AZURE_CLIENT_SECRET }}" \
-          --tenant "${{ secrets.AZURE_TENANT_ID }}"
-      
-      - name: Validate Azure Login
-        run: |
-          if ! az account show; then
-            echo "❌ Azure login failed! Please check credentials."
-            exit 1
-          else
-            echo "✅ Azure login successful!"
-          fi
-- name: Debug Client ID
-  run: |
-    CLIENT_ID=$(jq -r '.clientId' <<< '${{ secrets.AZURE_CREDENTIALS }}')
-    echo "Extracted Client ID: $CLIENT_ID"
+        CLIENT_ID=$(jq -r '.clientId' <<< '${{ secrets.AZURE_CREDENTIALS }}')
+        CLIENT_SECRET=$(jq -r '.clientSecret' <<< '${{ secrets.AZURE_CREDENTIALS }}')
+        TENANT_ID=$(jq -r '.tenantId' <<< '${{ secrets.AZURE_CREDENTIALS }}')
+
+       az login --service-principal --username "$CLIENT_ID" --password "$CLIENT_SECRET" --tenant "$TENANT_ID"
+
 
