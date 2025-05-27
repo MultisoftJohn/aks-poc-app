@@ -14,6 +14,14 @@ jobs:
     steps:
       - name: Checkout source code 
         uses: actions/checkout@v3
+        
+      - name: Azure Login with Service Principal
+        id: login
+        run: |
+          az login --service-principal \
+          --username "${{ secrets.service_principal }}" \
+          --password "${{ secrets.service_principal_password }}" \
+          --tenant "${{ secrets.tenant }}"
 
       - name: ACR build
         id: build-push-acr
@@ -28,14 +36,6 @@ jobs:
           folder: azure-vote
           branch: master
           tag: ${{ github.sha }}
-
-      - name: Azure Login with Service Principal
-        id: login
-        run: |
-          az login --service-principal \
-          --username "${{ secrets.service_principal }}" \
-          --password "${{ secrets.service_principal_password }}" \
-          --tenant "${{ secrets.tenant }}"
 
       - name: Set AKS context
         id: set-context
