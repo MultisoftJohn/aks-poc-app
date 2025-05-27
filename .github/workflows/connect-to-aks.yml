@@ -24,3 +24,6 @@ jobs:
 
       - name: Verify Connection
         run: kubectl get pods
+
+      - name: Show Nodes
+        run: kubectl get nodes
